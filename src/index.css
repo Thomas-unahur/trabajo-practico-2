@@ -33,6 +33,122 @@ body {
    1. ESTILOS DE AUTENTICACIÓN: Login y Register (Miembro 1)
    ========================================================================== */
 
+/* Contenedor de la página: centra la tarjeta vertical y horizontalmente */
+.auth-page {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+/* Tarjeta blanca con el formulario */
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 2rem;
+}
+
+.auth-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.auth-subtitle {
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.auth-card .form-label {
+  font-weight: 500;
+}
+
+.auth-card .form-control {
+  padding: 0.6rem 0.75rem;
+  border-color: var(--color-border);
+}
+
+/* Input seleccionado (cuando el usuario está escribiendo) */
+.auth-card .form-control:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.2);
+}
+
+/* Input con error: queda en rojo aunque tenga el foco */
+.auth-card .form-control.is-invalid,
+.auth-card .form-control.is-invalid:focus {
+  border-color: var(--color-danger);
+}
+
+.auth-card .form-control.is-invalid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.2);
+}
+
+/* Botón de Ingresar / Registrarme: ocupa todo el ancho de la tarjeta */
+.btn-auth {
+  width: 100%;
+  padding: 0.6rem;
+  font-weight: 600;
+}
+
+.btn-auth:disabled {
+  cursor: not-allowed;
+}
+
+/* Alerta de error arriba del formulario */
+.auth-alert {
+  border-left: 4px solid var(--color-danger);
+  font-size: 0.95rem;
+}
+
+.auth-hint {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.auth-link {
+  text-align: center;
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+}
+
+.auth-link a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-link a:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+/* Celulares: menos espacio para que la tarjeta entre bien */
+@media (max-width: 576px) {
+  .auth-page {
+    align-items: flex-start;
+    padding: 1.5rem 1rem;
+  }
+
+  .auth-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .auth-title {
+    font-size: 1.4rem;
+  }
+}
+
 
 /* ==========================================================================
    2. ESTILOS DE NAVEGACIÓN, HOME Y POSTCARD (Miembro 2)

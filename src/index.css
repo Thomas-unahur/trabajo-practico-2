@@ -89,9 +89,118 @@ body {
    ========================================================================== */
 
 
-/* ==========================================================================
+/* =====================================================
    2. ESTILOS DE NAVEGACIÓN, HOME Y POSTCARD (Miembro 2)
-   ========================================================================== */
+   ===================================================== */
+body {
+  background-color: #1f142d !important;
+  color: #e9ecef !important;
+}
+
+/* Navbar oscuro */
+.navbar-unahur {
+  background-color: #271a38 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navbar-brand-badge {
+  background-color: #5c3d88;
+  color: #ffffff !important;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tarjetas blancas con letra oscura  */
+.card-unahur {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: border-color 0.2s ease;
+}
+
+.card-unahur:hover {
+  border-color: rgba(0, 0, 0, 0.18) !important;
+}
+
+/* Forzar texto oscuro dentro de tarjetas blancas */
+.card-unahur h1,
+.card-unahur h2,
+.card-unahur h3,
+.card-unahur h4,
+.card-unahur h5,
+.card-unahur h6,
+.card-unahur p,
+.card-unahur small,
+.card-unahur .text-light,
+.card-unahur .text-white:not(.rounded-circle):not(.badge) {
+  color: #212529 !important;
+}
+
+.card-unahur .text-muted-unahur,
+.card-unahur .text-muted {
+  color: #6c757d !important;
+}
+
+.card-unahur .border-top,
+.card-unahur .border-custom {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Boton principal  */
+.btn-unahur-primary {
+  background-color: #b84a39;
+  border-color: #b84a39;
+  color: #ffffff !important;
+}
+
+.btn-unahur-primary:hover {
+  background-color: #a23f30;
+  border-color: #a23f30;
+  color: #ffffff !important;
+}
+
+/* Inputs claros dentro de las tarjetas */
+.input-unahur {
+  background-color: #f8f9fa !important;
+  color: #212529 !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 8px;
+}
+
+.input-unahur::placeholder {
+  color: #6c757d !important;
+  opacity: 1;
+}
+
+.input-unahur:focus {
+  box-shadow: 0 0 0 0.2rem rgba(92, 61, 136, 0.25) !important;
+  border-color: #5c3d88 !important;
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.card-unahur input,
+.card-unahur textarea,
+.card-unahur .form-control {
+  background-color: #f8f9fa !important;
+  color: #212529 !important;
+  border: 1px solid #ced4da !important;
+}
+
+.card-unahur input::placeholder,
+.card-unahur .form-control::placeholder {
+  color: #6c757d !important;
+  opacity: 1;
+}
+
 
 
 /* ==========================================================================

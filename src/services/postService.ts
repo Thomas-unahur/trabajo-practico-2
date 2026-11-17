@@ -22,6 +22,30 @@ export interface CreatePostImageData {
   postId: number | string;
 }
 
+function normalizePost(raw: Post): Post {
+  const rawImages = raw.imagen ?? raw.PostImages ?? [];
+  return {
+    ...raw,
+    userId: raw.userId ?? raw.UserId ?? raw.User?.id ?? "",
+    tags: raw.tags ?? raw.Tags ?? [],
+    imagen: Array.isArray(rawImages)
+      ? rawImages.map((img) => ({
+          ...img,
+          imageUrl: img.imageUrl ?? img.url ?? "",
+        }))
+      : [],
+  };
+}
+
+function sortPostsByRecent(posts: Post[]): Post[] {
+  return [...posts].sort((a, b) => {
+    const timeA = a.createdAt ? Date.parse(a.createdAt) : 0;
+    const timeB = b.createdAt ? Date.parse(b.createdAt) : 0;
+    if (timeB !== timeA) return timeB - timeA;
+    return Number(b.id) - Number(a.id);
+  });
+}
+
 /**
  * GET /posts
  * obtener la lista completa de publicaciones recientes.
@@ -36,7 +60,7 @@ export async function getPosts(): Promise<Post[]> {
   }
 
   const posts: Post[] = await respuesta.json();
-  return posts;
+  return Array.isArray(posts) ? sortPostsByRecent(posts.map(normalizePost)) : [];
 }
 
 /**
@@ -53,7 +77,7 @@ export async function getPostById(id: number): Promise<Post> {
   }
 
   const post: Post = await respuesta.json();
-  return post;
+  return normalizePost(post);
 }
 
 /**
@@ -70,14 +94,11 @@ export async function getPostsByUser(userId: number): Promise<Post[]> {
     );
   }
 
-  const posts: Post[] = await respuesta.json();
+  const rawPosts: Post[] = await respuesta.json();
+  const posts = Array.isArray(rawPosts) ? rawPosts.map(normalizePost) : [];
 
   // asegura el filtrado en memoria en caso de que el backend no filtre por query param
-  if (Array.isArray(posts) && posts.some((p) => p.userId !== undefined && p.userId !== userId)) {
-    return posts.filter((p) => p.userId === userId);
-  }
-
-  return posts;
+  return sortPostsByRecent(posts.filter((p) => String(p.userId) === String(userId)));
 }
 
 /**
@@ -128,7 +149,12 @@ export async function getImagesByPost(postId: number): Promise<PostImage[]> {
   }
 
   const images: PostImage[] = await respuesta.json();
-  return images;
+  return Array.isArray(images)
+    ? images.map((img) => ({
+        ...img,
+        imageUrl: img.imageUrl ?? img.url ?? "",
+      }))
+    : [];
 }
 
 /**

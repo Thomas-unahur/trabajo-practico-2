@@ -3,6 +3,16 @@
   padding-bottom: 1.5rem;
 }
 
+.bannerCard {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+  border-radius: 12px;
+}
+
+.bannerTitle {
+  color: #271a38 !important;
+}
+
 .cardUnahur {
   background-color: #ffffff !important;
   color: #212529 !important;

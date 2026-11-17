@@ -46,8 +46,11 @@ export default function PostDetail() {
         setImages(imagesData);
         setComments(commentsData.filter((c) => c.visible !== false));
 
-        if (postData.userId) {
-          getUserById(Number(postData.userId))
+        const authorId = postData.UserId ?? postData.userId;
+        if (postData.User?.nickName) {
+          setAuthorName(postData.User.nickName);
+        } else if (authorId) {
+          getUserById(Number(authorId))
             .then((userData) => setAuthorName(userData.nickName))
             .catch(() => {});
         }
@@ -83,10 +86,15 @@ export default function PostDetail() {
         postId: Number(id),
       });
 
-      setComments((prev) => [
-        { ...nuevoComentario, User: nuevoComentario.User ?? user },
-        ...prev,
-      ]);
+      try {
+        const updatedComments = await getCommentsByPost(Number(id));
+        setComments(updatedComments.filter((c) => c.visible !== false));
+      } catch {
+        setComments((prev) => [
+          { ...nuevoComentario, User: nuevoComentario.User ?? user },
+          ...prev,
+        ]);
+      }
       setContent("");
     } catch (err) {
       setFormError(
@@ -172,6 +180,12 @@ export default function PostDetail() {
             ))}
           </div>
         )}
+
+        <div className="d-flex align-items-center justify-content-between pt-3 mt-3 border-top">
+          <small className="text-muted">
+            {comments.length} {comments.length === 1 ? "comentario" : "comentarios"}
+          </small>
+        </div>
       </article>
 
       {/* Comentarios y formulario */}

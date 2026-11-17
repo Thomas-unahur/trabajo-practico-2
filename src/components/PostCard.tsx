@@ -30,19 +30,19 @@ export function PostCard({
             {firstLetter}
           </div>
           <div>
-            <h6 className="mb-0 fw-semibold text-white" style={{ fontSize: '0.95rem' }}>
+            <h6 className="mb-0 fw-semibold text-dark" style={{ fontSize: '0.95rem' }}>
               {authorName}
             </h6>
-            <small className="text-light opacity-75" style={{ fontSize: '0.75rem' }}>
+            <small className="text-muted" style={{ fontSize: '0.75rem' }}>
               @{authorName}
             </small>
           </div>
         </div>
-        <span className="text-light opacity-50">...</span>
+        <span className="text-muted">...</span>
       </div>
 
       {/* Descripcion de la publicacion */}
-      <p className="text-light mb-3" style={{ fontSize: '0.95rem', whiteSpace: 'pre-wrap' }}>
+      <p className="text-dark mb-3" style={{ fontSize: '0.95rem', whiteSpace: 'pre-wrap' }}>
         {post.description}
       </p>
 
@@ -66,7 +66,7 @@ export function PostCard({
             return (
               <span
                 key={tag.id || index}
-                className="badge bg-secondary opacity-75"
+                className="badge bg-secondary"
                 style={{ fontSize: '0.75rem' }}
               >
                 #{tag.name}
@@ -77,8 +77,8 @@ export function PostCard({
       )}
 
       {/* Pie de tarjeta (comentarios y ver mas) */}
-      <div className="d-flex align-items-center justify-content-between pt-2 border-top border-secondary opacity-75">
-        <small className="text-light">
+      <div className="d-flex align-items-center justify-content-between pt-2 border-top">
+        <small className="text-muted">
           {commentsCount} {commentsCount === 1 ? 'comentario' : 'comentarios'}
         </small>
         <Link to={`/post/${post.id}`} className="btn btn-unahur-primary btn-sm px-3">

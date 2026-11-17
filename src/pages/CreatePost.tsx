@@ -253,11 +253,10 @@ export default function CreatePost() {
             </label>
             <textarea
               id="post-description"
-              className={`form-control create-post-textarea ${
-                isDescriptionInvalid ? "is-invalid" : ""
-              }`}
+              className={`form-control create-post-textarea ${isDescriptionInvalid ? "is-invalid" : ""
+                }`}
               rows={4}
-              placeholder="¿Qué estás pensando hoy? Escribe aquí tu publicación..."
+              placeholder="¿Qué estás pensando hoy? Escribí tu publicación acá..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               onBlur={() => setDescriptionTouched(true)}
@@ -265,7 +264,7 @@ export default function CreatePost() {
             />
             {isDescriptionInvalid && (
               <div className="invalid-feedback">
-                Por favor, escribe una descripción para tu publicación.
+                Por favor, escribí una descripción para tu publicación.
               </div>
             )}
             <div className="form-text text-end">

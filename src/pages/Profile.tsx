@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getPostsByUser } from "../services/postService";
+import { getCommentsByPost } from "../services/commentService";
 import type { Post } from "../types";
 
 export default function Profile() {
@@ -20,7 +21,14 @@ export default function Profile() {
       setError(null);
       try {
         const data = await getPostsByUser(Number(user!.id));
-        setPosts(data);
+        const enriched = await Promise.all(
+          data.map(async (post) => {
+            if (Array.isArray(post.Comments)) return post;
+            const postComments = await getCommentsByPost(Number(post.id)).catch(() => []);
+            return { ...post, Comments: postComments };
+          })
+        );
+        setPosts(enriched);
       } catch (err) {
         setError(
           err instanceof Error

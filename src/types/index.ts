@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  id: number | string;
   nickName: string;
   firstName?: string;
   lastName?: string;
@@ -12,18 +12,24 @@ export interface Tag {
 }
 
 export interface PostImage {
-  id: string;
-  idPost: string;
-  imageUrl: string;
+  id: number | string;
+  idPost?: number | string;
+  PostId?: number | string;
+  imageUrl?: string;
+  url?: string;
 }
 
 export interface Post {
-  id: string;
+  id: number | string;
   userId: number | string;
+  UserId?: number | string;
+  User?: User;
   description: string;
   tags: Tag[];
+  Tags?: Tag[];
   imagen: PostImage[];
-  Comments?: any[];
+  PostImages?: PostImage[];
+  Comments?: Comment[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -32,7 +38,9 @@ export interface Comment {
   id: number | string;
   content: string;
   userId?: number | string;
+  UserId?: number | string;
   postId?: number | string;
+  PostId?: number | string;
   idUser?: User | number | string;
   idPost?: number | string;
   visible?: boolean;

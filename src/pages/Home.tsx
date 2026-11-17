@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PostCard } from '../components/PostCard';
-import { getPosts } from '../services/postService';
+import { getImagesByPost, getPosts } from '../services/postService';
+import { getCommentsByPost } from '../services/commentService';
 import { getUsers } from '../services/userService';
 import { useAuth } from '../context/AuthContext';
 import type { Post, User } from '../types';
@@ -19,24 +20,59 @@ export default function Home() {
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
     useEffect(() => {
-        getPosts()
-            .then((data) => {
-                setPosts(data);
-                setLoading(false);
-            })
-            .catch((err) => {
+        let active = true;
+
+        async function loadFeed() {
+            try {
+                const data = await getPosts();
+                const enriched = await Promise.all(
+                    data.map(async (post) => {
+                        const postId = Number(post.id);
+                        const [comments, images] = await Promise.all([
+                            Array.isArray(post.Comments)
+                                ? Promise.resolve(post.Comments)
+                                : getCommentsByPost(postId).catch(() => []),
+                            post.imagen.length > 0
+                                ? Promise.resolve(post.imagen)
+                                : getImagesByPost(postId).catch(() => []),
+                        ]);
+                        return {
+                            ...post,
+                            Comments: comments.filter((c) => c?.visible !== false),
+                            imagen: images,
+                        };
+                    })
+                );
+                if (active) {
+                    setPosts(enriched);
+                    setLoading(false);
+                }
+            } catch (err) {
                 console.error(err);
-                setError('No se pudieron cargar las publicaciones recientes.');
-                setLoading(false);
-            });
+                if (active) {
+                    setError('No se pudieron cargar las publicaciones recientes.');
+                    setLoading(false);
+                }
+            }
+        }
+
+        loadFeed();
 
         getUsers()
-            .then((data) => setUsers(data))
-            .catch(() => {});
+            .then((data) => {
+                if (active) setUsers(data);
+            })
+            .catch(() => { });
+
+        return () => {
+            active = false;
+        };
     }, []);
 
-    function getAuthorNick(userId: number | string): string {
-        const found = users.find((u) => String(u.id) === String(userId));
+    function getAuthorNick(post: Post): string {
+        if (post.User?.nickName) return post.User.nickName;
+        const authorId = post.UserId ?? post.userId;
+        const found = users.find((u) => String(u.id) === String(authorId));
         return found ? found.nickName : 'estudiante';
     }
 
@@ -49,7 +85,7 @@ export default function Home() {
     );
 
     const filteredPosts = posts.filter((post) => {
-        const authorNick = getAuthorNick(post.userId);
+        const authorNick = getAuthorNick(post);
 
         const matchesSearch =
             post.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -62,40 +98,73 @@ export default function Home() {
         return matchesSearch && matchesTag;
     });
 
+    // Contar cuantos posts pertenecen al usuario logueado
+    const userPostsCount = isAuthenticated && user
+        ? posts.filter((post) => {
+            const authorId = post.UserId ?? post.userId ?? post.User?.id;
+            return authorId !== undefined && String(authorId) === String(user.id);
+        }).length
+        : 0;
+
     return (
         <div className={`container ${styles.pageContainer}`}>
-            {/* banner de bienvenida */}
-            <div className={`card p-4 mb-4 text-center border-0 shadow-sm ${styles.bannerCard}`}>
-                <h3 className={`fw-bold mb-2 ${styles.bannerTitle}`}>🎓 Bienvenidos a UnaHur Anti-Social Net</h3>
-                <p className="text-muted mb-2 fst-italic">
-                    "La red oficial donde la comunidad universitaria comparte apuntes, proyectos y sobrevive a los finales en equipo."
-                </p>
-                <div className="d-flex justify-content-center gap-3 flex-wrap small text-muted">
-                    <span> ⚡ Dato curioso: El 99% de los bugs se resuelven tomando mate.</span>
-                    <span> 🚀 Estado del sistema: 100% Activo</span>
+            {/* El banner de bienvenida solo se muestra si no esta autenticado */}
+            {!isAuthenticated && (
+                <div className={`card p-4 mb-4 text-center border-0 shadow-sm ${styles.bannerCard}`}>
+                    <h3 className={`fw-bold mb-2 ${styles.bannerTitle}`}>🎓 Bienvenidos a UnaHur Anti-Social Net</h3>
+                    <p className="text-muted mb-2 fst-italic">
+                        "La red oficial donde la comunidad universitaria comparte apuntes, proyectos y sobrevive a los finales en equipo."
+                    </p>
+                    <div className="d-flex justify-content-center gap-3 flex-wrap small text-muted">
+                        <span>⚡ Dato curioso: El 99% de los bugs se resuelven tomando mate.</span>
+                        <span>🚀 Estado del sistema: 100% Activo</span>
+                    </div>
                 </div>
-            </div>
+            )}
 
             <div className="row g-4">
-                {/* colujmna izquierda: seccion "sobre nosotros" */}
+                {/* columna izquierda: Si esta logueado muestra su perfil, sino "sobre nosotros" */}
                 <div className="col-12 col-lg-3">
-                    <div className={`card p-3 mb-3 ${styles.cardUnahur}`}>
-                        <h6 className={`fw-bold mb-3 ${styles.cardTitle}`}>Sobre nosotros</h6>
-                        <ul className="list-unstyled mb-0 d-flex flex-column gap-2 small text-muted">
-                            <li className="d-flex align-items-center gap-2">
-                                <span>🛡️</span>
-                                <span className="text-dark">UnaHur Anti-Social Net</span>
-                            </li>
-                            <li className="d-flex align-items-center gap-2">
-                                <span>🏛️</span>
-                                <span className="text-dark">Comunidad Universitaria</span>
-                            </li>
-                            <li className="d-flex align-items-center gap-2">
-                                <span>💻</span>
-                                <span className="text-dark">React, TS & Bootstrap</span>
-                            </li>
-                        </ul>
-                    </div>
+                    {isAuthenticated ? (
+                        <div className={`card p-3 mb-3 ${styles.cardUnahur}`}>
+                            <div className={styles.avatarContainer}>
+                                <div className={styles.avatarLarge}>
+                                    {user?.nickName ? user.nickName.charAt(0).toUpperCase() : 'U'}
+                                </div>
+                                <p className={styles.userName}>@{user?.nickName || 'estudiante'}</p>
+                            </div>
+                            <div className={styles.profileStats}>
+                                <div className={styles.statItem}>
+                                    <p className={styles.statNumber}>{userPostsCount}</p>
+                                    <p className={styles.statLabel}>Posts</p>
+                                </div>
+                                <div className={styles.statItem}>
+                                    <Link to="/profile" className="text-decoration-none text-dark">
+                                        <p className={styles.statNumber} style={{ fontSize: '0.85rem' }}>Mi Perfil</p>
+                                        <p className={styles.statLabel}>Ver cuenta</p>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className={`card p-3 mb-3 ${styles.cardUnahur}`}>
+                            <h6 className={`fw-bold mb-3 ${styles.cardTitle}`}>Sobre nosotros</h6>
+                            <ul className="list-unstyled mb-0 d-flex flex-column gap-2 small text-muted">
+                                <li className="d-flex align-items-center gap-2">
+                                    <span>🛡️</span>
+                                    <span>UnaHur Anti-Social Net</span>
+                                </li>
+                                <li className="d-flex align-items-center gap-2">
+                                    <span>🏛️</span>
+                                    <span>Comunidad Universitaria</span>
+                                </li>
+                                <li className="d-flex align-items-center gap-2">
+                                    <span>💻</span>
+                                    <span>React, TS & Bootstrap</span>
+                                </li>
+                            </ul>
+                        </div>
+                    )}
 
                     <div className={`card p-3 ${styles.cardUnahur}`}>
                         <h6 className={`fw-bold mb-2 small text-uppercase ${styles.cardTitle}`}>Actividad de red</h6>
@@ -115,7 +184,7 @@ export default function Home() {
                             style={{ cursor: 'pointer' }}
                         >
                             <div className="d-flex align-items-center gap-3">
-                                <div className={styles.avatarLarge}>
+                                <div className={styles.avatarSmall}>
                                     {user?.nickName ? user.nickName.charAt(0).toUpperCase() : 'U'}
                                 </div>
                                 <input
@@ -125,7 +194,7 @@ export default function Home() {
                                     placeholder={`¿Qué estás pensando, @${user?.nickName || 'estudiante'}?`}
                                 />
                                 <button type="button" className={`btn btn-sm px-3 flex-shrink-0 ${styles.btnPrimary}`}>
-                                    Publicar
+                                    Postear
                                 </button>
                             </div>
                         </div>
@@ -146,7 +215,7 @@ export default function Home() {
                         </div>
                     )}
 
-                    {/* barra de busqueda en el feed */}
+                    {/* Barra de busqueda en el feed */}
                     <div className="d-flex gap-2 mb-3 align-items-center">
                         <input
                             type="text"
@@ -185,7 +254,7 @@ export default function Home() {
                     ) : (
                         <div className="d-flex flex-column gap-3">
                             {filteredPosts.map((post) => (
-                                <PostCard key={post.id} post={post} authorName={getAuthorNick(post.userId)} />
+                                <PostCard key={post.id} post={post} authorName={getAuthorNick(post)} />
                             ))}
                         </div>
                     )}
@@ -195,16 +264,20 @@ export default function Home() {
                 <div className="col-12 col-lg-3">
                     <div className={`card p-3 mb-3 ${styles.cardUnahur}`}>
                         <h6 className={`fw-bold mb-3 ${styles.cardTitle}`}>Usuarios registrados</h6>
-                        <div className="d-flex flex-column gap-2">
-                            <div className="d-flex align-items-center gap-2">
-                                <div className={styles.avatarSmall}>T</div>
-                                <span className="small text-dark">@thomas</span>
+                        {users.length === 0 ? (
+                            <p className="small text-muted mb-0">Sin usuarios registrados.</p>
+                        ) : (
+                            <div className="d-flex flex-column gap-2">
+                                {users.map((registeredUser) => (
+                                    <div key={registeredUser.id} className="d-flex align-items-center gap-2">
+                                        <div className={styles.avatarSmall}>
+                                            {registeredUser.nickName.charAt(0).toUpperCase()}
+                                        </div>
+                                        <span className="small text-dark">@{registeredUser.nickName}</span>
+                                    </div>
+                                ))}
                             </div>
-                            <div className="d-flex align-items-center gap-2">
-                                <div className="avatarSmall" style={{ width: '32px', height: '32px', backgroundColor: '#5c3d88', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold' }}>P</div>
-                                <span className="small text-dark">@pepe</span>
-                            </div>
-                        </div>
+                        )}
                     </div>
 
                     <div className={`card p-3 ${styles.cardUnahur}`}>
@@ -232,7 +305,7 @@ export default function Home() {
                                             key={tag.id}
                                             type="button"
                                             onClick={() => setSelectedTag(isActive ? null : tag.name)}
-                                            className={`badge px-2 py-2 ${isActive ? styles.tagActive : styles.tagInactive}`}
+                                            className={`${styles.tagBadge} ${isActive ? styles.tagBadgeActive : ''}`}
                                         >
                                             #{tag.name}
                                         </button>

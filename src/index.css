@@ -5,10 +5,12 @@
 :root {
   --color-bg: #f8f9fa;
   --color-surface: #ffffff;
-  --color-primary: #0d6efd;
-  --color-primary-hover: #0b5ed7;
-  --color-primary-rgb: 13, 110, 253;
-  --color-primary-soft: rgba(13, 110, 253, 0.1);
+  --color-primary: #b84a39;
+  --color-primary-hover: #a23f30;
+  --color-primary-rgb: 184, 74, 57;
+  --color-primary-soft: rgba(184, 74, 57, 0.12);
+  --color-purple: #5c3d88;
+  --color-purple-soft: rgba(92, 61, 136, 0.12);
   --color-secondary: #6c757d;
   --color-text: #212529;
   --color-text-muted: #6c757d;
@@ -28,20 +30,23 @@
 
   --bs-body-bg: var(--color-bg);
   --bs-body-color: var(--color-text);
+  --bs-body-font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
+  background-color: #1f142d !important;
+  color: #e9ecef !important;
+  font-family: var(--bs-body-font-family);
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 /* tarjeta base compartida reutilizable en vistas */
 .app-card {
   background-color: var(--color-surface);
+  color: var(--color-text);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
@@ -102,6 +107,7 @@ body {
   width: 100%;
   max-width: 420px;
   background-color: var(--color-surface);
+  color: var(--color-text);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
@@ -111,6 +117,7 @@ body {
 .auth-title {
   font-size: 1.6rem;
   font-weight: 700;
+  color: var(--color-text);
   text-align: center;
   margin-bottom: 0.25rem;
 }
@@ -122,18 +129,22 @@ body {
 }
 
 .auth-card .form-label {
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--color-text);
 }
 
 .auth-card .form-control {
   padding: 0.6rem 0.75rem;
+  color: var(--color-text);
+  background-color: #f8f9fa;
   border-color: var(--color-border);
 }
 
 /* Input seleccionado (cuando el usuario está escribiendo) */
 .auth-card .form-control:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.2);
+  border-color: var(--color-purple);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 0.2rem rgba(92, 61, 136, 0.2);
 }
 
 /* Input con error: queda en rojo aunque tenga el foco */
@@ -151,6 +162,15 @@ body {
   width: 100%;
   padding: 0.6rem;
   font-weight: 600;
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: #ffffff !important;
+}
+
+.btn-auth:hover:not(:disabled) {
+  background-color: var(--color-primary-hover) !important;
+  border-color: var(--color-primary-hover) !important;
+  color: #ffffff !important;
 }
 
 .btn-auth:disabled {
@@ -173,6 +193,7 @@ body {
 
 .auth-link {
   text-align: center;
+  color: var(--color-text);
   margin-top: 0.75rem;
   margin-bottom: 0;
 }
@@ -208,10 +229,6 @@ body {
 /* =====================================================
    2. ESTILOS DE NAVEGACIÓN, HOME Y POSTCARD (Miembro 2)
    ===================================================== */
-body {
-  background-color: #1f142d !important;
-  color: #e9ecef !important;
-}
 
 /* Navbar oscuro */
 .navbar-unahur {
@@ -528,10 +545,35 @@ body {
 /* tarjeta principal del formulario */
 .create-post-card {
   background-color: var(--color-surface);
+  color: var(--color-text);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
   padding: 2.25rem;
+}
+
+.create-post-card .form-label {
+  color: var(--color-text);
+}
+
+.create-post-card .form-text {
+  color: var(--color-text-muted);
+}
+
+.create-post-card .form-control {
+  background-color: #f8f9fa !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border);
+}
+
+.create-post-card .form-control::placeholder {
+  color: var(--color-text-muted) !important;
+  opacity: 1;
+}
+
+.create-post-card .form-control:focus {
+  background-color: #ffffff !important;
+  color: var(--color-text) !important;
 }
 
 /* cabecera de la seccion de creacion */
@@ -545,8 +587,8 @@ body {
 .create-post-icon-wrapper {
   width: 52px;
   height: 52px;
-  background-color: var(--color-primary-soft);
-  color: var(--color-primary);
+  background-color: var(--color-purple-soft);
+  color: var(--color-purple);
   border-radius: var(--radius-card);
   display: flex;
   align-items: center;
@@ -585,6 +627,8 @@ body {
 }
 
 .create-post-author-badge {
+  background-color: var(--color-purple) !important;
+  color: #ffffff !important;
   font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -646,7 +690,15 @@ body {
   font-weight: 600;
   padding: 0.4rem 0.85rem;
   border-radius: var(--radius-sm);
+  color: var(--color-purple) !important;
+  border-color: var(--color-purple) !important;
   transition: all 0.15s ease-in-out;
+}
+
+.btn-add-image:hover:not(:disabled) {
+  background-color: var(--color-purple) !important;
+  border-color: var(--color-purple) !important;
+  color: #ffffff !important;
 }
 
 /* galeria de previsualizacion en vivo de imagenes cargadas */
@@ -753,10 +805,15 @@ body {
 }
 
 .btn-publish {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: #ffffff !important;
   transition: all 0.15s ease-in-out;
 }
 
 .btn-publish:hover:not(:disabled) {
+  background-color: var(--color-primary-hover) !important;
+  border-color: var(--color-primary-hover) !important;
   box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.35);
   transform: translateY(-1px);
 }

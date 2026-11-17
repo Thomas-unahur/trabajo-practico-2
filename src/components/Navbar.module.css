@@ -47,7 +47,14 @@
 }
 
 .logoutBtn {
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: #b84a39 !important;
+  border-color: #b84a39 !important;
+  color: #ffffff !important;
+}
+
+.logoutBtn:hover {
+  background-color: #a23f30 !important;
+  border-color: #a23f30 !important;
   color: #ffffff !important;
 }
 

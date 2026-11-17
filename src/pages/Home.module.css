@@ -175,7 +175,7 @@
 .cardUnahur h6,
 .cardUnahur p,
 .cardUnahur small,
-.cardUnahur span:not(.badge),
+.cardUnahur span:not(.badge)
 .cardUnahur a:not(.btnPrimary):not(.btnSecondaryCard) {
   color: #212529 !important;
 }

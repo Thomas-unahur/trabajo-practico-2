@@ -184,3 +184,56 @@
 .cardUnahur .text-light {
   color: #6c757d !important;
 }
+
+.avatarContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.avatarLarge {
+  width: 60px;
+  height: 60px;
+  background-color: #5c3d88;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.userName {
+  font-weight: 600;
+  color: #212529;
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.profileStats {
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 0.75rem;
+  margin-top: 1rem;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statNumber {
+  font-weight: bold;
+  color: #212529;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: #6c757d;
+  margin-bottom: 0;
+}

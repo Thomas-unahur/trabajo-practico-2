@@ -1,0 +1,186 @@
+.pageContainer {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.cardUnahur {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-bottom: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.cardUnahur:hover {
+  border-color: rgba(0, 0, 0, 0.18) !important;
+}
+
+.cardTitle {
+  font-weight: 700;
+  color: #212529;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+/* Perfil en la columna izquierda */
+.avatarContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.avatarLarge {
+  width: 60px;
+  height: 60px;
+  background-color: #5c3d88;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.userName {
+  font-weight: 600;
+  color: #212529;
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.profileStats {
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 0.75rem;
+  margin-top: 1rem;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statNumber {
+  font-weight: bold;
+  color: #212529;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+/* Caja de creacion de posts (superior centro) */
+.composerCard {
+  cursor: pointer;
+}
+
+.composerInput {
+  background-color: #f8f9fa !important;
+  color: #212529 !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+}
+
+.composerInput::placeholder {
+  color: #6c757d !important;
+}
+
+.avatarSmall {
+  width: 36px;
+  height: 36px;
+  background-color: #5c3d88;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+/* Botón principal */
+.btnPrimary {
+  background-color: #b84a39 !important;
+  border-color: #b84a39 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 6px 16px;
+}
+
+.btnPrimary:hover {
+  background-color: #a23f30 !important;
+  border-color: #a23f30 !important;
+  color: #ffffff !important;
+}
+
+/* Boton secundario para ingresar (violeta oscuro) */
+.btnSecondaryCard {
+  background-color: #271a38 !important;
+  border: 1px solid #271a38 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 6px 16px;
+}
+
+.btnSecondaryCard:hover {
+  background-color: #1f142d !important;
+  color: #ffffff !important;
+}
+
+/* Etiquetas y usuarios */
+.userRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.tagBadge {
+  background-color: #f8f9fa !important;
+  color: #212529 !important;
+  border: 1px solid #dee2e6;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.tagBadgeActive {
+  background-color: #b84a39 !important;
+  color: white !important;
+  border: none;
+}
+
+/* Forzar texto oscuro dentro de todas las tarjetas blancas de la home (excepto botones) */
+.cardUnahur h1,
+.cardUnahur h2,
+.cardUnahur h3,
+.cardUnahur h4,
+.cardUnahur h5,
+.cardUnahur h6,
+.cardUnahur p,
+.cardUnahur small,
+.cardUnahur span:not(.badge),
+.cardUnahur a:not(.btnPrimary):not(.btnSecondaryCard) {
+  color: #212529 !important;
+}
+
+.cardUnahur .text-muted,
+.cardUnahur .text-light {
+  color: #6c757d !important;
+}

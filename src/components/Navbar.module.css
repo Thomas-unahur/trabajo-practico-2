@@ -1,0 +1,63 @@
+.navbarUnahur {
+  background-color: #271a38 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brandContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none !important;
+}
+
+.brandBadge {
+  background-color: #5c3d88;
+  color: #ffffff !important;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brandText {
+  font-weight: 600;
+  color: #ffffff !important;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+
+.navContainer {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 992px) {
+  .navContainer {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.navLinkItem {
+  color: #ffffff !important;
+}
+
+.logoutBtn {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.primaryBtn {
+  background-color: #b84a39 !important;
+  border-color: #b84a39 !important;
+  color: #ffffff !important;
+}
+
+.primaryBtn:hover {
+  background-color: #a23f30 !important;
+  border-color: #a23f30 !important;
+}

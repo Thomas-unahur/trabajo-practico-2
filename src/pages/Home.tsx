@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PostCard } from '../components/PostCard';
 import { getPosts } from '../services/postService';
+import { getUsers } from '../services/userService';
 import { useAuth } from '../context/AuthContext';
-import type { Post } from '../types';
+import type { Post, User } from '../types';
 import styles from './Home.module.css';
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
     const navigate = useNavigate();
 
     const [posts, setPosts] = useState<Post[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');
@@ -27,7 +29,16 @@ export default function Home() {
                 setError('No se pudieron cargar las publicaciones recientes.');
                 setLoading(false);
             });
+
+        getUsers()
+            .then((data) => setUsers(data))
+            .catch(() => {});
     }, []);
+
+    function getAuthorNick(userId: number | string): string {
+        const found = users.find((u) => String(u.id) === String(userId));
+        return found ? found.nickName : 'estudiante';
+    }
 
     const availableTags = Array.from(
         new Map(
@@ -38,21 +49,18 @@ export default function Home() {
     );
 
     const filteredPosts = posts.filter((post) => {
-    const authorNick =
-      typeof post.idUser === 'object' && post.idUser !== null
-        ? post.idUser.nickName
-        : '';
+        const authorNick = getAuthorNick(post.userId);
 
-    const matchesSearch =
-      post.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      authorNick.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch =
+            post.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            authorNick.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesTag = selectedTag
-      ? post.tags?.some((t) => t.name.toLowerCase() === selectedTag.toLowerCase())
-      : true;
+        const matchesTag = selectedTag
+            ? post.tags?.some((t) => t.name.toLowerCase() === selectedTag.toLowerCase())
+            : true;
 
-    return matchesSearch && matchesTag;
-  });
+        return matchesSearch && matchesTag;
+    });
 
     return (
         <div className={`container ${styles.pageContainer}`}>
@@ -177,7 +185,7 @@ export default function Home() {
                     ) : (
                         <div className="d-flex flex-column gap-3">
                             {filteredPosts.map((post) => (
-                                <PostCard key={post.id} post={post} />
+                                <PostCard key={post.id} post={post} authorName={getAuthorNick(post.userId)} />
                             ))}
                         </div>
                     )}

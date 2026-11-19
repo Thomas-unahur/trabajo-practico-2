@@ -1,18 +1,20 @@
 import { Link } from 'react-router-dom';
 import type { Post } from '../types';
 
-export function PostCard({ post }: { post: Post }) {
-  const authorName =
-    typeof post.idUser === 'object' && post.idUser !== null
-      ? post.idUser.nickName
-      : 'estudiante';
+export function PostCard({
+  post,
+  authorName = 'estudiante',
+}: {
+  post: Post;
+  authorName?: string;
+}) {
   const firstLetter = (authorName || 'E').charAt(0).toUpperCase();
   const commentsCount = Array.isArray(post.Comments) ? post.Comments.length : 0;
 
   const firstImage =
     Array.isArray(post.imagen) &&
-    post.imagen.length > 0 &&
-    typeof post.imagen[0] === 'object'
+      post.imagen.length > 0 &&
+      typeof post.imagen[0] === 'object'
       ? post.imagen[0].imageUrl
       : null;
 

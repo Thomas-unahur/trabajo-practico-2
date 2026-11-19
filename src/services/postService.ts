@@ -9,7 +9,7 @@ export const API_BASE_URL = "http://localhost:3001";
  */
 export interface CreatePostData {
   description: string;
-  userId: number;
+  userId: number | string;
   tagIds?: number[];
   tags?: number[];
 }
@@ -19,7 +19,7 @@ export interface CreatePostData {
  */
 export interface CreatePostImageData {
   url: string;
-  postId: number;
+  postId: number | string;
 }
 
 /**

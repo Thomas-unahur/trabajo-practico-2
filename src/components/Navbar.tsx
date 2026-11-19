@@ -52,7 +52,7 @@ export function Navbar() {
                 </NavLink>
                 <button
                   onClick={handleLogout}
-                  className={`btn btn-sm ms-lg-2 px-3 ${styles.logoutBtn}`}
+                  className={`btn btn-sm ${styles.logoutBtn}`}
                 >
                   Salir
                 </button>
@@ -62,7 +62,7 @@ export function Navbar() {
                 <NavLink to="/login" className={`nav-link ${styles.navLinkItem}`} onClick={closeMenu}>
                   Iniciar sesión
                 </NavLink>
-                <NavLink to="/register" className={`btn btn-sm px-3 ms-lg-2 ${styles.primaryBtn}`} onClick={closeMenu}>
+                <NavLink to="/register" className={`btn btn-sm ${styles.primaryBtn}`} onClick={closeMenu}>
                   Registrarse
                 </NavLink>
               </>

@@ -1,8 +1,7 @@
 import type { Post, PostImage } from "../types";
+import { API_BASE_URL } from "./apiClient";
 
-// URL base de la API del BackEnd (por defecto se usa el provisto por la catedra en puerto 3001).
-// si en el proyecto se centraliza en apiClient, se comparte la misma direccion.
-export const API_BASE_URL = "http://localhost:3001";
+export { API_BASE_URL };
 
 /**
  * datos requeridos para dar de alta una nueva publicacion.

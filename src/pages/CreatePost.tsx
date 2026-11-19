@@ -1,22 +1,14 @@
 import { useState, useEffect } from "react";
 import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import type { Tag, User } from "../types";
+import type { Tag } from "../types";
+import { useAuth } from "../context/AuthContext";
 import { createPost, createPostImage } from "../services/postService";
 import { getTags } from "../services/tagService";
 
 export default function CreatePost() {
   const navigate = useNavigate();
-
-  // obtencion del usuario en sesion
-  const [user] = useState<User | null>(() => {
-    try {
-      const stored = localStorage.getItem("user");
-      return stored ? (JSON.parse(stored) as User) : null;
-    } catch {
-      return null;
-    }
-  });
+  const { user } = useAuth();
 
   // estados controlados del formulario
   const [description, setDescription] = useState<string>("");

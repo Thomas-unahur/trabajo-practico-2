@@ -23,10 +23,13 @@ export const AuthContext = createContext<AuthContextType>({
 
 // Lee el usuario que quedó guardado en el navegador. Si no hay ninguno devuelve null.
 function leerUsuarioGuardado(): User | null {
-  const usuarioGuardado = localStorage.getItem(CLAVE_USUARIO);
-  if (usuarioGuardado) {
-    // localStorage guarda texto: JSON.parse lo vuelve a convertir en objeto
-    return JSON.parse(usuarioGuardado);
+  try {
+    const usuarioGuardado = localStorage.getItem(CLAVE_USUARIO);
+    if (usuarioGuardado) {
+      return JSON.parse(usuarioGuardado);
+    }
+  } catch {
+    localStorage.removeItem(CLAVE_USUARIO);
   }
   return null;
 }
